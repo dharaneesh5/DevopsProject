@@ -1,0 +1,93 @@
+pipeline {
+  agent any
+
+  environment {
+    AWS_REGION = 'eu-north-1'
+  }
+
+  parameters {
+    booleanParam(name: 'DESTROY_INFRA', defaultValue: false, description: 'Destroy infra after run')
+  }
+
+  stages {
+    stage('Checkout Code') {
+      steps {
+        git url: 'https://github.com/dharaneesh5/DevopsProject.git', branch: 'main'
+      }
+    }
+
+    stage('Terraform Plan') {
+      options {
+        timeout(time: 5, unit: 'MINUTES')
+      }
+      steps {
+        withCredentials([
+          [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred'],
+          sshUserPrivateKey(credentialsId: 'MY_EC2_KEY', keyFileVariable: 'SSH_KEY_PATH')
+        ]) {
+          sh '''
+            export AWS_DEFAULT_REGION=$AWS_REGION
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            terraform init
+            terraform plan -input=false -var="private_key_path=$SSH_KEY_PATH" -var="key_name=jenkins"
+          '''
+        }
+      }
+    }
+
+    stage('Terraform Apply') {
+      options {
+        timeout(time: 5, unit: 'MINUTES')
+      }
+      steps {
+        withCredentials([
+          [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred'],
+          sshUserPrivateKey(credentialsId: 'MY_EC2_KEY', keyFileVariable: 'SSH_KEY_PATH')
+        ]) {
+          sh '''
+            export AWS_DEFAULT_REGION=$AWS_REGION
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            terraform apply -input=false -var="private_key_path=$SSH_KEY_PATH" -var="key_name=jenkins" -auto-approve
+          '''
+        }
+      }
+    }
+
+    stage('Terraform Destroy') {
+      when {
+        expression { return params.DESTROY_INFRA }
+      }
+      options {
+        timeout(time: 5, unit: 'MINUTES')
+      }
+      steps {
+        withCredentials([
+          [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred'],
+          sshUserPrivateKey(credentialsId: 'MY_EC2_KEY', keyFileVariable: 'SSH_KEY_PATH')
+        ]) {
+          sh '''
+            export AWS_DEFAULT_REGION=$AWS_REGION
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            terraform destroy -input=false -var="private_key_path=$SSH_KEY_PATH" -var="key_name=jenkins" -auto-approve
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+  always {
+    echo 'Pipeline finished.'
+  }
+  success {
+    echo 'Pipeline completed successfully.'
+  }
+  failure {
+    echo 'Pipeline failed.'
+  }
+}
+
+}
