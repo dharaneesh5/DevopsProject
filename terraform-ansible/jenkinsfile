@@ -26,6 +26,7 @@ pipeline {
           sshUserPrivateKey(credentialsId: 'MY_EC2_KEY', keyFileVariable: 'SSH_KEY_PATH')
         ]) {
           sh '''
+            cd terraform-ansible
             export AWS_DEFAULT_REGION=$AWS_REGION
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
@@ -38,7 +39,7 @@ pipeline {
 
     stage('Terraform Apply') {
       options {
-        timeout(time: 5, unit: 'MINUTES')
+        timeout(time: 10, unit: 'MINUTES')
       }
       steps {
         withCredentials([
@@ -46,6 +47,7 @@ pipeline {
           sshUserPrivateKey(credentialsId: 'MY_EC2_KEY', keyFileVariable: 'SSH_KEY_PATH')
         ]) {
           sh '''
+            cd terraform-ansible
             export AWS_DEFAULT_REGION=$AWS_REGION
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
@@ -68,6 +70,7 @@ pipeline {
           sshUserPrivateKey(credentialsId: 'MY_EC2_KEY', keyFileVariable: 'SSH_KEY_PATH')
         ]) {
           sh '''
+            cd terraform-ansible
             export AWS_DEFAULT_REGION=$AWS_REGION
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
@@ -79,15 +82,14 @@ pipeline {
   }
 
   post {
-  always {
-    echo 'Pipeline finished.'
+    always {
+      echo 'Pipeline finished.'
+    }
+    success {
+      echo 'Pipeline completed successfully.'
+    }
+    failure {
+      echo 'Pipeline failed.'
+    }
   }
-  success {
-    echo 'Pipeline completed successfully.'
-  }
-  failure {
-    echo 'Pipeline failed.'
-  }
-}
-
 }
