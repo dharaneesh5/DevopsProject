@@ -8,7 +8,7 @@ This project implements a 2-tier architecture in AWS using Terraform. It include
 
 ## Architecture Diagram
 
-
+![image alt] (https://github.com/dharaneesh5/DevopsProject/blob/4a1056d79b8b40b3298e997597fccfe267cbd25f/2-tire-application/Screenshot%202025-05-26%20113317.png)
 
 ---
 
