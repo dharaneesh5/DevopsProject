@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements a 2-tier architecture in AWS using Terraform. It includes a public-facing web tier and a private backend tier for running applications and storing data.
+This project implements a 2-tier architecture in AWS using Terraform. It includes a public-facing web tier and a private backend tier for Running Applications and storing data.
 
 ---
 
