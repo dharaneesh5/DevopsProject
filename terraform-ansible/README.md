@@ -2,8 +2,7 @@
 
 [Architecture Diagram]
 
-
-
+![image alt](https://github.com/dharaneesh5/DevopsProject/blob/99a575a29c0d247646ad3d4afc670485690cfcfc/terraform-ansible/project1.jpg)
 
 ---
 
