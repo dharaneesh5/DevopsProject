@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_USER = 'dharaneesh5'
+        IMAGE_NAME = 'my-app-2'
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git url: 'https://github.com/dharaneesh5/testing.git', branch: 'main'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('docker-ansible') {
+                    sh 'docker build -t $DOCKER_HUB_USER/$IMAGE_NAME:latest .'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-cred',
+                                                  usernameVariable: 'USERNAME',
+                                                  passwordVariable: 'PASSWORD')]) {
+                    sh '''
+                        echo $PASSWORD | docker login -u $USERNAME --password-stdin
+                        docker push $DOCKER_HUB_USER/$IMAGE_NAME:latest
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy with Ansible') {
+            steps {
+                sshagent(credentials: ['MY_EC2_KEY', 'MY_EC2_KEY_2']) {
+                    dir('docker-ansible') {
+                        sh '''
+                            export ANSIBLE_HOST_KEY_CHECKING=False
+                            ansible-playbook -i inventory.ini playbook.yml
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}

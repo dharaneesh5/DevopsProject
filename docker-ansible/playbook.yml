@@ -1,0 +1,39 @@
+---
+- name: Install Docker and run container (supports Ubuntu & Amazon Linux)
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update APT cache (Ubuntu only)
+      apt:
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install Docker on Ubuntu
+      apt:
+        name: docker.io
+        state: present
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install Docker on Amazon Linux
+      yum:
+        name: docker
+        state: present
+      when: ansible_distribution == "Amazon"
+
+    - name: Start and enable Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull Docker image
+      shell: docker pull dharaneesh5/my-app-2
+
+    - name: Stop and remove existing container if running
+      shell: docker rm -f web_app || true
+
+    - name: Run Docker container
+      shell: docker run -d --name web_app -p 80:80 dharaneesh5/my-app-2
+
+    - name: Show running containers (for debug)
+      shell: docker ps
