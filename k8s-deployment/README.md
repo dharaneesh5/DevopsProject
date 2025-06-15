@@ -45,14 +45,16 @@ It offers hands-on experience with:
 ---
 
 ## 📁 Folder Structure
-K8s-deployment
-├── Dockerfile
-├── index.html
-│── deployment.yaml
-│── service.yaml
-│── ingress.yaml
-│── Architecture.jpg
-└── README.md
+
+.
+├── README.md
+└── k8s-deployment/
+    ├── Dockerfile
+    ├── index.html
+    ├── deployment.yaml
+    ├── service.yaml
+    ├── ingress.yaml
+    └── Architecture.jpg
 
 ---
 🌐 TO Access the Application
