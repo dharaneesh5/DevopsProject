@@ -44,19 +44,6 @@ It offers hands-on experience with:
 
 ---
 
-## 📁 Folder Structure
-
-.
-├── README.md
-└── k8s-deployment/
-    ├── Dockerfile
-    ├── index.html
-    ├── deployment.yaml
-    ├── service.yaml
-    ├── ingress.yaml
-    └── Architecture.jpg
-
----
 🌐 TO Access the Application
 🔗 http://dharanidevops.duckdns.org:31232
 
