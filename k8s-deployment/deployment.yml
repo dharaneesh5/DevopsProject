@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: html-page-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: html-page
+  template:
+    metadata:
+      labels:
+        app: html-page
+    spec:
+      containers:
+      - name: html-page
+        image: dharaneesh5/html-page:latest
+        ports:
+        - containerPort: 80
+
