@@ -2,31 +2,60 @@
 
 > 🖼 *Architecture Diagram*
 
-![image alt]()
+![Architecture Diagram](https://github.com/dharaneesh5/DevopsProject/blob/54944d55e157b22c5ca0d9caa02849b63de6198d/k8s-deployment/Architecture.jpg)
 
 ---
 
 ## 📖 About This Project
 
-This project demonstrates how to build, containerize, and deploy a simple web-based Tic Tac Toe game using modern DevOps and cloud-native tools.
+This project demonstrates how to **containerize and deploy a static web-based Tic Tac Toe game** using **Docker, Kubernetes, Ingress**, and **custom DNS (DuckDNS)**.
 
-You’ll learn how to:
+It offers hands-on experience with:
 
-- Build a static web app using index.html
-- Package it into a Docker image
-- Push the image to Docker Hub
-- Deploy the app on a Kubernetes cluster using a Deployment and Service
-- Expose the app externally using an Ingress resource and Ingress Controller
-- Make it publicly accessible via a custom DuckDNS domain
-
-The purpose of this project is to provide hands-on experience with containerization,
-Kubernetes resource management, and external access via Ingress and DNS configuration — all crucial skills for DevOps and SRE roles.
+- Docker image creation and publishing
+- Kubernetes deployments, services, and ingress
+- Exposing applications to the internet using DNS
+- CI/CD-ready architecture for DevOps engineers
 
 ---
 
-## 🌐 To Access the Application
+## 🧩 Tech Stack
 
-🔗 [http://dharanidevops.duckdns.org:31232]
+| Tool           | Purpose                                 |
+|----------------|------------------------------------------|
+| HTML/CSS/JS    | Game frontend                           |
+| Docker         | Containerization                        |
+| Docker Hub     | Image Registry                          |
+| Kubernetes     | Orchestration & deployment              |
+| Ingress-NGINX  | Expose app via HTTP                     |
+| DuckDNS        | Free DNS mapping                        |
+| GitHub         | Source code version control             |
 
 ---
+
+## 🚀 Project Features
+
+- 🎮 A responsive Tic Tac Toe web app built with pure HTML and JavaScript
+- 🐳 Dockerfile to containerize the game
+- 📦 Deployment using `kubectl`, `Deployment`, and `Service` YAML files
+- 🌐 External access via `Ingress` and `NodePort` service
+- 🧭 DNS resolution using **DuckDNS** and access on custom domain
+- 🔄 Easily replicable for learning or demonstration purposes
+
+---
+
+## 📁 Folder Structure
+K8s-deployment
+├── Dockerfile
+├── index.html
+│── deployment.yaml
+│── service.yaml
+│── ingress.yaml
+│── Architecture.jpg
+└── README.md
+
+---
+🌐 TO Access the Application
+🔗 http://dharanidevops.duckdns.org:31232
+
 
